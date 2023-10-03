@@ -1,6 +1,6 @@
 #!/bin/bash 
 
-STACK_NAME=SampleAWSWebApp01
+STACK_NAME=sampleawswebapp01
 REGION=us-east-1
 CLI_PROFILE=similoluwaokunowo
 EC2_INSTANCE_TYPE=t3.micro 
@@ -8,6 +8,7 @@ EC2_INSTANCE_TYPE=t3.micro
 GH_ACCESS_TOKEN=$(cat ~/.github/aws-the-good-parts-access-token)
 GH_REPO_OWNER=$(cat ~/.github/aws-the-good-parts-username)
 GH_REPO=$(cat ~/.github/aws-the-good-parts-repo)
+GH_BRANCH=master
 
 AWS_ACCOUNT_ID=$(aws sts get-caller-identity --profile ${CLI_PROFILE} --query "Account" --output text)
 CODEPIPELINE_BUCKET="$STACK_NAME-$REGION-codepipeline-$AWS_ACCOUNT_ID"
@@ -40,10 +41,10 @@ aws cloudformation deploy \
       GitHubPersonalAccessToken=$GH_ACCESS_TOKEN \
       CodePipelineBucket=$CODEPIPELINE_BUCKET
 
-# # If the deploy succeeded, show the DNS name of the created instance
-# if [ $? -eq 0 ]; then
-#   aws cloudformation list-exports \
-#     --profile $CLI_PROFILE \
-#     --query "Exports[?Name=='InstanceEndpoint'].Value" \
-#     --region $REGION
-# fi 
+# If the deploy succeeded, show the DNS name of the created instance
+if [ $? -eq 0 ]; then
+  aws cloudformation list-exports \
+    --profile $CLI_PROFILE \
+    --query "Exports[?Name=='InstanceEndpoint'].Value" \
+    --region $REGION
+fi 
