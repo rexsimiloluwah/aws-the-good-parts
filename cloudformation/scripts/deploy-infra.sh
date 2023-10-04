@@ -48,3 +48,11 @@ if [ $? -eq 0 ]; then
     --query "Exports[?starts_with(Name, 'InstanceEndpoint')].Value" \
     --region $REGION
 fi 
+
+# Show the load balancer endpoint 
+if [ $? -eq 0]; then 
+  aws cloudformation list-exports \
+    --profile $CLI_PROFILE \
+    --query "Exports[?ends_with(Name, 'LoadBalancerEndpoint')].Value" \
+    --region $REGION
+fi 
