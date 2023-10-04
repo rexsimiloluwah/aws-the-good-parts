@@ -254,7 +254,7 @@ Resources:
             nvm install v12.7.0
             nvm use v12.7.0
 
-            npm install -g pnpm 
+            npm install -g pm2 
 
             # Download latest code, unzip it into /home/ec2-user/app
             #wget https://github.com/{{Git_username}}/aws-bootstrap/archive/master.zip 
