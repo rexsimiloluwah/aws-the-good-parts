@@ -138,7 +138,7 @@ Resources:
                 Version: 1
                 Provider: GitHub
               OutputArtifacts:
-                - Name: Source
+                - Name: SourceOutput
               Configuration:
                 Owner: !Ref GitHubOwner
                 Repo: !Ref GitHubRepo
@@ -155,9 +155,9 @@ Resources:
                 Version: 1
                 Provider: CodeBuild
               InputArtifacts:
-                - Name: Source
+                - Name: SourceOutput
               OutputArtifacts:
-                - Name: Build
+                - Name: BuildOutput
               Configuration:
                 ProjectName: !Ref BuildProject
               RunOrder: 1
@@ -165,7 +165,7 @@ Resources:
           Actions:
             - Name: Staging
               InputArtifacts:
-                - Name: Build
+                - Name: BuildOutput
               ActionTypeId:
                 Category: Deploy
                 Owner: AWS
@@ -223,6 +223,7 @@ Resources:
       ImageId: !Ref EC2AMI
       InstanceType: !Ref EC2InstanceType
       IamInstanceProfile: !Ref InstanceProfile
+      KeyName: theblackdove01
       Monitoring: true
       SecurityGroupIds:
         - !GetAtt SecurityGroup.GroupId
@@ -252,6 +253,8 @@ Resources:
             nvm alias default v12.7.0
             nvm install v12.7.0
             nvm use v12.7.0
+
+            npm install -g pnpm 
 
             # Download latest code, unzip it into /home/ec2-user/app
             #wget https://github.com/{{Git_username}}/aws-bootstrap/archive/master.zip 

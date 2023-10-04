@@ -5,11 +5,10 @@ phases:
       nodejs: 10
   pre_build:
     commands:
-      # run 'npm install' using versions in package-lock.json
-      - npm ci
+      - CI=true pnpm install
   build:
     commands:
-      - npm run build
+      - pnpm run build
 artifacts:
   files:
     - start-service.sh

@@ -6,6 +6,7 @@
   "scripts": {
     "start": "pm2 start ecosystem.config.js",
     "stop": "pm2 stop sample_aws_web_app",
+    "build": "echo Building...",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
