@@ -262,7 +262,7 @@ Resources:
             #mv aws-bootstrap-master app
 
             # Create log directory
-            mkdir -p /home/ec2-user/app/logs
+            mkdir -p /home/ec2-user/app/release/logs
 
             # Run server
             #cd app
