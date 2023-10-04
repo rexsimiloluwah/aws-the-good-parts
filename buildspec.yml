@@ -2,13 +2,13 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      nodejs: 10
+      nodejs: 16
   pre_build:
     commands:
-      - CI=true pnpm install
+      - npm install
   build:
     commands:
-      - pnpm run build
+      - npm run build
 artifacts:
   files:
     - start-service.sh
