@@ -223,7 +223,7 @@ Resources:
       VpcId: !Ref VPC
       AvailabilityZone: !Select [0, !GetAZs ""] # Get the first AZ from the array of AZs
       CidrBlock: 10.0.0.0/18
-      MapPublicIpOnLaunch: true <3>
+      MapPublicIpOnLaunch: true
       Tags:
         - Key: Name
           Value: !Ref AWS::StackName
