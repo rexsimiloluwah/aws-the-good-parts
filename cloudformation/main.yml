@@ -118,7 +118,6 @@ Resources:
 
   StagingDeploymentGroup:
     Type: AWS::CodeDeploy::DeploymentGroup
-    DependsOn: Instance
     Properties:
       DeploymentGroupName: staging
       ApplicationName: !Ref DeploymentApplication
@@ -126,10 +125,10 @@ Resources:
       ServiceRoleArn: !GetAtt DeploymentRole.Arn
       AutoScalingGroups:
         - !Ref ScalingGroup
-      Ec2TagFilters:
-        - Key: aws:cloudformation:stack-name
-          Type: KEY_AND_VALUE
-          Value: !Ref AWS::StackName
+      # Ec2TagFilters:
+      #   - Key: aws:cloudformation:stack-name
+      #     Type: KEY_AND_VALUE
+      #     Value: !Ref AWS::StackName
 
   Pipeline:
     Type: AWS::CodePipeline::Pipeline
@@ -324,9 +323,9 @@ Resources:
       VpcId: !Ref VPC
       HealthCheckEnabled: true
       HealthCheckProtocol: HTTP
-      Targets:
-        - Id: !Ref Instance
-        - Id: !Ref Instance2
+      # Targets:
+      #   - Id: !Ref Instance
+      #   - Id: !Ref Instance2
       Tags:
         - Key: Name
           Value: !Ref AWS::StackName
@@ -410,27 +409,27 @@ Resources:
             # Signal to CloudFormation that the instance is ready
             /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --region ${AWS::Region} --resource ${!LOGICAL_ID}
 
-  Instance:
-    Type: AWS::EC2::Instance
-    Properties:
-      SubnetId: !Ref SubnetAZ1
-      LaunchTemplate:
-        LaunchTemplateId: !Ref InstanceLaunchTemplate
-        Version: !GetAtt InstanceLaunchTemplate.LatestVersionNumber
-      Tags:
-        - Key: Name
-          Value: !Ref AWS::StackName
+  # Instance:
+  #   Type: AWS::EC2::Instance
+  #   Properties:
+  #     SubnetId: !Ref SubnetAZ1
+  #     LaunchTemplate:
+  #       LaunchTemplateId: !Ref InstanceLaunchTemplate
+  #       Version: !GetAtt InstanceLaunchTemplate.LatestVersionNumber
+  #     Tags:
+  #       - Key: Name
+  #         Value: !Ref AWS::StackName
 
-  Instance2:
-    Type: AWS::EC2::Instance
-    Properties:
-      SubnetId: !Ref SubnetAZ2
-      LaunchTemplate:
-        LaunchTemplateId: !Ref InstanceLaunchTemplate
-        Version: !GetAtt InstanceLaunchTemplate.LatestVersionNumber
-      Tags:
-        - Key: Name
-          Value: !Ref AWS::StackName
+  # Instance2:
+  #   Type: AWS::EC2::Instance
+  #   Properties:
+  #     SubnetId: !Ref SubnetAZ2
+  #     LaunchTemplate:
+  #       LaunchTemplateId: !Ref InstanceLaunchTemplate
+  #       Version: !GetAtt InstanceLaunchTemplate.LatestVersionNumber
+  #     Tags:
+  #       - Key: Name
+  #         Value: !Ref AWS::StackName
 
   ScalingGroup:
     Type: AWS::AutoScaling::AutoScalingGroup
@@ -460,10 +459,10 @@ Resources:
       TargetGroupARNs:
         - !Ref LoadBalancerTargetGroup
       MetricsCollection:
-        Granularity: "1Minute"
-        Metrics:
-          - "GroupMaxSize"
-          - "GroupInServiceInstances"
+        - Granularity: "1Minute"
+          Metrics:
+            - "GroupMaxSize"
+            - "GroupInServiceInstances"
       VPCZoneIdentifier:
         - !Ref SubnetAZ1
         - !Ref SubnetAZ2
@@ -473,18 +472,6 @@ Resources:
           PropagateAtLaunch: "true"
 
 Outputs:
-  InstanceEndpoint1:
-    Description: The DNS name for the created instance
-    Value: !Sub "http://${Instance.PublicDnsName}:8080"
-    Export:
-      Name: InstanceEndpoint
-
-  InstanceEndpoint2:
-    Description: The DNS name for the created instance
-    Value: !Sub "http://${Instance2.PublicDnsName}:8080"
-    Export:
-      Name: InstanceEndpoint2
-
   LoadBalancerEndpoint:
     Description: The DNS name for the LB
     Value: !Sub "http://${LoadBalancer.DNSName}:80"

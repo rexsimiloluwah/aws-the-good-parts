@@ -3,7 +3,7 @@ const http = require("http")
 
 const PORT = process.env.PORT || 8080 
 
-message = `<h1>Hello World. From ${hostname()}</h1>`
+message = `<h1>Hello, My people. From ${hostname()}</h1>`
 
 const server = http.createServer((_, res) => {
     res.statusCode = 200;
