@@ -50,7 +50,7 @@ if [ $? -eq 0 ]; then
 fi 
 
 # Show the load balancer endpoint 
-if [ $? -eq 0]; then 
+if [ $? -eq 0 ]; then 
   aws cloudformation list-exports \
     --profile $CLI_PROFILE \
     --query "Exports[?ends_with(Name, 'LoadBalancerEndpoint')].Value" \
